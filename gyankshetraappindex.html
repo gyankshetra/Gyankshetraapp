@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Gyankshetra</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#f4f6f9;
+ color:#172033;
+ font-family:Arial,"Noto Sans Devanagari",sans-serif
+}
+.app{max-width:620px;margin:auto;padding-bottom:80px}
+
+.top{
+ height:65px;background:#111827;color:#fff;
+ display:flex;align-items:center;gap:12px;
+ padding:10px 14px;position:sticky;top:0;z-index:20
+}
+.top button{background:none;border:0;color:#fff;font-size:22px}
+.brand{flex:1;font-size:20px;font-weight:900}
+.brand small{display:block;font-size:9px;color:#aeb8c8;font-weight:400}
+
+.screen{display:none;padding:16px}
+.screen.active{display:block}
+
+.welcome{padding:15px 2px}
+.welcome b{font-size:20px}
+.welcome small{display:block;color:#778397;margin-top:5px}
+
+.banner{
+ background:linear-gradient(135deg,#0757b8,#1688e8);
+ color:#fff;border-radius:18px;padding:18px;
+ display:flex;align-items:center;gap:12px
+}
+.banner span{font-size:32px}
+.banner b{font-size:18px}
+.banner small{display:block;margin-top:6px;opacity:.85}
+.banner button{
+ margin-left:auto;background:#fff;color:#0757b8;
+ border:0;border-radius:10px;padding:10px;font-weight:800
+}
+
+h2{font-size:20px}
+h3{font-size:17px;margin-top:20px}
+
+.tiles{
+ display:grid;grid-template-columns:1fr 1fr;gap:10px
+}
+.tiles>div{
+ background:#fff;padding:16px;border-radius:15px;
+ box-shadow:0 3px 12px #0000000b;cursor:pointer
+}
+.tiles b{display:block;margin-top:8px}
+.tiles small,.card small,.examrow small,.testcard small{
+ display:block;color:#7b8799;margin-top:5px;font-size:11px
+}
+
+.card,.testcard,.examrow{
+ background:#fff;border-radius:15px;
+ box-shadow:0 3px 12px #0000000b
+}
+.card{padding:15px;margin:9px 0}
+
+.examrow{
+ padding:15px;margin:9px 0;
+ display:flex;align-items:center;gap:12px
+}
+.examrow span{font-size:27px}
+.examrow div{flex:1}
+.examrow i{font-size:24px;color:#8b96a6}
+
+.testcard{
+ padding:15px;margin:9px 0;
+ display:flex;align-items:center;gap:10px
+}
+.testcard div{flex:1}
+
+button{cursor:pointer}
+.testcard button,.card button,.wide{
+ background:#075fc3;color:#fff;border:0;
+ border-radius:10px;padding:10px 13px;font-weight:800
+}
+.wide{width:100%;margin-top:10px}
+
+.quizbar{
+ background:#0c3975;color:#fff;
+ margin:-16px -16px 14px;padding:15px;
+ display:flex;align-items:center;gap:10px
+}
+.quizbar button{
+ background:none;border:0;color:#fff;font-size:22px
+}
+.quizbar b{flex:1}
+
+.qcard{
+ background:#fff;padding:16px;border-radius:16px
+}
+.qcard h2{line-height:1.5}
+
+.option{
+ border:1px solid #dce4ed;
+ padding:13px;border-radius:11px;margin:8px 0;
+ cursor:pointer
+}
+.option.sel{
+ background:#eaf4ff;border-color:#0765c7
+}
+
+.analysis{
+ background:#eff9f1;
+ border-left:4px solid #28a35b;
+ padding:11px;margin-top:12px;
+ font-size:12px;line-height:1.6
+}
+
+.actions{display:flex;gap:8px}
+.actions button{
+ flex:1;margin-top:12px;padding:11px;
+ border:1px solid #d9e1ea;
+ background:#fff;border-radius:10px
+}
+.actions .next{background:#075fc3;color:#fff}
+
+.palette{
+ display:grid;grid-template-columns:repeat(6,1fr);
+ gap:6px;margin-top:12px
+}
+.p{
+ background:#e9edf2;padding:8px;
+ text-align:center;border-radius:7px;font-size:11px
+}
+.p.done{background:#ccebd8}
+.p.cur{background:#075fc3;color:#fff}
+
+.score{
+ width:130px;height:130px;
+ border:10px solid #29a55c;border-radius:50%;
+ display:flex;align-items:center;justify-content:center;
+ margin:25px auto;font-size:28px;font-weight:900
+}
+
+.resultgrid{
+ display:grid;grid-template-columns:repeat(3,1fr);gap:8px
+}
+.resultgrid div{
+ background:#fff;padding:13px;text-align:center;
+ border-radius:12px
+}
+.resultgrid b,.resultgrid small{display:block}
+
+.profile{text-align:center}
+.profile div{font-size:45px}
+
+.bottom{
+ position:fixed;bottom:0;left:0;right:0;
+ max-width:620px;margin:auto;background:#fff;
+ border-top:1px solid #ddd;
+ display:flex;justify-content:space-around;z-index:30
+}
+.bottom button{
+ background:none;border:0;padding:8px 5px;color:#6d7788
+}
+.bottom small{display:block;font-size:10px}
+
+.drawer{
+ display:none;position:fixed;inset:0;
+ background:#0008;z-index:50
+}
+.drawer.open{display:block}
+.menu{
+ width:82%;max-width:340px;height:100%;
+ background:#fff;padding:20px
+}
+.menu h2{color:#075fc3}
+.menu button{
+ display:block;width:100%;text-align:left;
+ background:none;border:0;padding:14px 4px;
+ font-size:15px
+}
+
+/* LOGIN */
+.modal{
+ display:none;position:fixed;inset:0;
+ background:#0009;z-index:100;
+ align-items:center;justify-content:center;padding:20px
+}
+.modal.open{display:flex}
+.modalbox{
+ width:100%;max-width:390px;
+ background:#fff;border-radius:20px;
+ padding:24px;box-shadow:0 15px 50px #0005
+}
+.modalbox h2{color:#075fc3;margin-top:0}
+.modalbox input{
+ width:100%;padding:13px;
+ border:1px solid #d5dde8;
+ border-radius:10px;margin:8px 0 12px;
+ font-size:16px
+}
+.modalbox button{
+ width:100%;padding:13px;
+ border:0;border-radius:10px;
+ background:#075fc3;color:#fff;
+ font-weight:800
+}
+.idpreview{
+ background:#eef6ff;padding:10px;
+ border-radius:10px;margin-bottom:12px;
+ font-weight:800
+}
+.userline{
+ text-align:center;color:#68768a;
+ font-size:12px;margin:5px 0 10px
+}
+.point{
+ background:#fff;padding:14px;
+ border-radius:14px;margin:8px 0
+}
+.point b{display:block}
+.point small{color:#68768a;line-height:1.6}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top">
+<button onclick="drawer()">☰</button>
+<div class="brand">
+Gyankshetra
+<small>Learning • Practice • Success</small>
+</div>
+<button onclick="go('profile')">👤</button>
+</header>
+
+
+<!-- HOME -->
+
+<main id="home" class="screen active">
+
+<section class="welcome">
+<b id="welcome">नमस्ते विद्यार्थी 👋</b>
+<small>आज की तैयारी शुरू करें</small>
+</section>
+
+<section class="banner">
+<div>
+<span>🎯</span>
+<b>अपनी परीक्षा की तैयारी<br>एक ही जगह</b>
+<small>BPSC TRE • STET • अन्य परीक्षाएँ</small>
+</div>
+<button onclick="go('exams')">देखें →</button>
+</section>
+
+<h3>मुख्य तैयारी</h3>
+
+<div class="tiles">
+
+<div onclick="requireUser(startQuiz)">
+📝
+<b>Test Series</b>
+<small>Mock & Chapter Tests</small>
+</div>
+
+<div onclick="go('study')">
+📚
+<b>Study / Books</b>
+<small>Notes & Chapters</small>
+</div>
+
+<div onclick="go('papers')">
+📄
+<b>Previous Papers</b>
+<small>PYQ Practice</small>
+</div>
+
+<div onclick="requireUser(startQuiz)">
+🎯
+<b>Practice</b>
+<small>MCQ Practice</small>
+</div>
+
+</div>
+
+<h3>आपकी परीक्षाएँ</h3>
+
+<div class="examrow">
+<span>🎓</span>
+<div>
+<b>BPSC TRE-4</b>
+<small>Teacher Recruitment Preparation</small>
+</div>
+<i>›</i>
+</div>
+
+<div class="examrow">
+<span>📘</span>
+<div>
+<b>STET</b>
+<small>State Teacher Eligibility Test</small>
+</div>
+<i>›</i>
+</div>
+
+<h3>आज का टेस्ट</h3>
+
+<div class="testcard">
+<div>
+<strong>🧪 विलयन (Solutions)</strong>
+<small>50 प्रश्न • 50 अंक • 50 मिनट • No Negative</small>
+</div>
+<button onclick="requireUser(startQuiz)">Start</button>
+</div>
+
+</main>
+
+
+<!-- TESTS -->
+
+<main id="tests" class="screen">
+
+<h2>📝 Test Series</h2>
+
+<div class="card">
+
+🧪
+<b>विलयन — STET / BPSC TRE-4</b>
+
+<small>
+50 Questions • 50 Marks • 50 Minutes • +1 / No Negative
+</small>
+
+<button onclick="requireUser(startQuiz)">
+Start Test
+</button>
+
+</div>
+
+<div class="card">
+📚
+<b>Subject Wise Tests</b>
+<small>
+रसायन • जीव विज्ञान • इतिहास • भूगोल
+</small>
+</div>
+
+<div class="card">
+🏆
+<b>Full Mock Tests</b>
+<small>
+Exam pattern practice
+</small>
+</div>
+
+</main>
+
+
+<!-- STUDY -->
+
+<main id="study" class="screen">
+
+<h2>📚 Study / Books</h2>
+
+<div class="card">
+🧪 <b>रसायन विज्ञान</b>
+<small>विलयन • रासायनिक बंधन • अम्ल-क्षार</small>
+</div>
+
+<div class="card">
+🧬 <b>जीव विज्ञान</b>
+<small>Chapter-wise notes</small>
+</div>
+
+<div class="card">
+📜 <b>इतिहास</b>
+<small>Chapter-wise notes</small>
+</div>
+
+</main>
+
+
+<!-- PAPERS -->
+
+<main id="papers" class="screen">
+
+<h2>📄 Previous Year Papers</h2>
+
+<div class="card">
+📘 <b>STET Previous Papers</b>
+<small>Question paper practice</small>
+</div>
+
+<div class="card">
+📕 <b>BPSC TRE Previous Papers</b>
+<small>PYQ practice</small>
+</div>
+
+</main>
+
+
+<!-- PRACTICE -->
+
+<main id="practice" class="screen">
+
+<h2>🎯 Practice</h2>
+
+<div class="tiles">
+
+<div onclick="requireUser(startQuiz)">
+⚡
+<b>Quick MCQ</b>
+<small>50 Questions</small>
+</div>
+
+<div onclick="requireUser(startQuiz)">
+🎯
+<b>Weak Topics</b>
+<small>Target practice</small>
+</div>
+
+<div onclick="requireUser(startQuiz)">
+🔀
+<b>Random Test</b>
+<small>Mixed questions</small>
+</div>
+
+<div>
+⭐
+<b>Saved Questions</b>
+<small>Your bookmarks</small>
+</div>
+
+</div>
+
+</main>
+
+
+<!-- EXAMS -->
+
+<main id="exams" class="screen">
+
+<h2>📚 आपकी परीक्षाएँ</h2>
+
+<div class="examrow">
+<span>🎓</span>
+<div>
+<b>BPSC TRE-4</b>
+<small>Mock • PYQ • Study • Practice</small>
+</div>
+<i>›</i>
+</div>
+
+<div class="examrow">
+<span>📘</span>
+<div>
+<b>STET</b>
+<small>Mock • PYQ • Study • Practice</small>
+</div>
+<i>›</i>
+</div>
+
+</main>
+
+
+<!-- QUIZ -->
+
+<main id="quiz" class="screen">
+
+<div class="quizbar">
+
+<button onclick="go('tests')">‹</button>
+
+<b>
+विलयन
+<span id="qn">1/50</span>
+</b>
+
+<strong>
+⏱ <span id="timer">50:00</span>
+</strong>
+
+</div>
+
+<div class="userline" id="quizUser"></div>
+
+<div class="qcard">
+
+<small>
+प्रश्न <span id="num">1</span> / 50
+</small>
+
+<h2 id="question"></h2>
+
+<div id="options"></div>
+
+<div id="analysis" class="analysis" hidden></div>
+
+<div class="actions">
+
+<button onclick="prev()">
+← पिछला
+</button>
+
+<button class="next" onclick="next()">
+अगला →
+</button>
+
+</div>
+
+</div>
+
+<div id="palette" class="palette"></div>
+
+</main>
+
+
+<!-- RESULT -->
+
+<main id="result" class="screen">
+
+<h2>🏆 Result</h2>
+
+<div class="userline" id="resultUser"></div>
+
+<div class="score" id="score">
+0%
+</div>
+
+<div class="resultgrid">
+
+<div>
+✅
+<b id="correct">0</b>
+<small>सही</small>
+</div>
+
+<div>
+❌
+<b id="wrong">0</b>
+<small>गलत</small>
+</div>
+
+<div>
+⭕
+<b id="skip">0</b>
+<small>छोड़े</small>
+</div>
+
+</div>
+
+<div class="card">
+
+<b>कुल अंक</b>
+
+<strong id="marks">
+0 / 50
+</strong>
+
+<small>
+50 Minutes • No Negative Marking
+</small>
+
+</div>
+
+<button class="wide" onclick="go('important')">
+⭐ Important Points देखें
+</button>
+
+</main>
+
+
+<!-- IMPORTANT -->
+
+<main id="important" class="screen">
+
+<h2>⭐ Important Points</h2>
+
+<div id="pointsList"></div>
+
+</main>
+
+
+<!-- PROFILE -->
+
+<main id="profile" class="screen">
+
+<h2>👤 Profile</h2>
+
+<div class="profile card">
+
+<div>👤</div>
+
+<h3 id="profileName">
+Gyankshetra Student
+</h3>
+
+<small id="profileId">
+Login करके अपनी ID बनाएँ
+</small>
+
+</div>
+
+<div class="card">
+
+<b>📊 Test History</b>
+
+<small id="historyText">
+अभी कोई टेस्ट नहीं दिया गया।
+</small>
+
+</div>
+
+<div class="card">
+
+<b>🏆 Best Score</b>
+
+<strong id="bestScore">
+0 / 50
+</strong>
+
+</div>
+
+<button class="wide" onclick="changeUser()">
+👤 Change User
+</button>
+
+</main>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom">
+
+<button onclick="go('home')">
+⌂
+<small>Home</small>
+</button>
+
+<button onclick="go('tests')">
+📝
+<small>Tests</small>
+</button>
+
+<button onclick="go('practice')">
+🎯
+<small>Quiz</small>
+</button>
+
+<button onclick="go('important')">
+⭐
+<small>Saved</small>
+</button>
+
+<button onclick="go('profile')">
+👤
+<small>Profile</small>
+</button>
+
+</nav>
+
+
+<!-- DRAWER -->
+
+<div id="drawer" class="drawer" onclick="drawer()">
+
+<div class="menu" onclick="event.stopPropagation()">
+
+<h2>Gyankshetra</h2>
+
+<button onclick="go('home');drawer()">
+🏠 Home
+</button>
+
+<button onclick="go('tests');drawer()">
+📝 Test Series
+</button>
+
+<button onclick="go('study');drawer()">
+📚 Study / Books
+</button>
+
+<button onclick="go('papers');drawer()">
+📄 Previous Papers
+</button>
+
+<button onclick="go('practice');drawer()">
+🎯 Practice
+</button>
+
+<button onclick="go('exams');drawer()">
+📚 Exams
+</button>
+
+<button onclick="go('result');drawer()">
+🏆 Results
+</button>
+
+<button onclick="go('profile');drawer()">
+👤 Profile
+</button>
+
+</div>
+</div>
+
+
+<!-- LOGIN MODAL -->
+
+<div id="loginModal" class="modal">
+
+<div class="modalbox">
+
+<h2>🎓 Gyankshetra Login</h2>
+
+<p>
+Test शुरू करने से पहले अपना नाम दर्ज करें।
+</p>
+
+<label>
+👤 आपका नाम
+</label>
+
+<input
+id="nameInput"
+placeholder="जैसे: Arbind Kumar"
+oninput="previewId()"
+>
+
+<div class="idpreview" id="idPreview">
+आपकी ID: @01Name
+</div>
+
+<button onclick="saveUser()">
+आगे बढ़ें →
+</button>
+
+<p style="font-size:11px;color:#7b8799;margin-top:12px">
+नाम और ID इसी ब्राउज़र/डिवाइस में सेव होंगे।
+</p>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   BASIC SETTINGS
+========================= */
+
+const TOTAL = 50;
+
+const TIME = 50 * 60;
+
+let qi = 0;
+
+let ans = Array(TOTAL).fill(null);
+
+let time = TIME;
+
+let timerHandle = null;
+
+let pendingAction = null;
+
+
+/* =========================
+   QUESTION BANK
+========================= */
+
+const questions = [
+
+[
+"विलयन की मोलरता किस पर निर्भर करती है?",
+[
+"विलयन के आयतन पर",
+"केवल दाब पर",
+"केवल रंग पर",
+"केवल घनत्व पर"
+],
+0
+],
+
+[
+"मोलरता की सामान्य इकाई क्या है?",
+[
+"mol kg⁻¹",
+"mol L⁻¹",
+"g L⁻¹",
+"L mol⁻¹"
+],
+1
+],
+
+[
+"मोललता किस पर आधारित होती है?",
+[
+"विलयन के आयतन पर",
+"विलायक के द्रव्यमान पर",
+"विलेय के आयतन पर",
+"दाब पर"
+],
+1
+],
+
+[
+"हेनरी का नियम किससे संबंधित है?",
+[
+"गैस की द्रव में विलेयता",
+"गलनांक",
+"परमाणु द्रव्यमान",
+"pH"
+],
+0
+],
+
+[
+"राउल्ट का नियम मुख्यतः किससे संबंधित है?",
+[
+"वाष्प-दाब",
+"घनत्व",
+"pH",
+"चालकता"
+],
+0
+],
+
+[
+"मोल अंश किससे संबंधित है?",
+[
+"अवयव के मोल और कुल मोल",
+"द्रव्यमान और तापमान",
+"दाब और आयतन",
+"घनत्व और आयतन"
+],
+0
+],
+
+[
+"ppm का प्रयोग सामान्यतः किसके लिए होता है?",
+[
+"बहुत कम सांद्रता",
+"बहुत अधिक दाब",
+"उच्च तापमान",
+"परमाणु संख्या"
+],
+0
+],
+
+[
+"आदर्श विलयन किस नियम का पालन करता है?",
+[
+"राउल्ट का नियम",
+"बॉयल का नियम",
+"चार्ल्स का नियम",
+"ग्राहम का नियम"
+],
+0
+],
+
+[
+"आदर्श विलयन में मिश्रण की ऊष्मा कितनी होती है?",
+[
+"शून्य",
+"बहुत अधिक",
+"अनंत",
+"ऋणात्मक अनंत"
+],
+0
+],
+
+[
+"आदर्श विलयन में आयतन परिवर्तन कितना होता है?",
+[
+"शून्य",
+"बहुत अधिक",
+"हमेशा धनात्मक",
+"हमेशा ऋणात्मक"
+],
+0
+],
+
+[
+"सहसंयोजी गुण किस पर निर्भर करते हैं?",
+[
+"विलेय कणों की संख्या",
+"विलेय का रंग",
+"विलायक का रंग",
+"पात्र का आकार"
+],
+0
+],
+
+[
+"परासरण किस दिशा में होता है?",
+[
+"अर्धपारगम्य झिल्ली से होकर विलायक का गमन",
+"केवल विलेय का गमन",
+"गैस का गमन",
+"इलेक्ट्रॉन का गमन"
+],
+0
+],
+
+[
+"परासरण दाब किस प्रकार का गुण है?",
+[
+"सहसंयोजी गुण",
+"परमाणु गुण",
+"चुंबकीय गुण",
+"विद्युत गुण"
+],
+0
+],
+
+[
+"क्वथनांक में वृद्धि किसका उदाहरण है?",
+[
+"सहसंयोजी गुण",
+"परमाणु गुण",
+"रासायनिक बंध",
+"नाभिकीय गुण"
+],
+0
+],
+
+[
+"हिमांक में अवनमन किसका उदाहरण है?",
+[
+"सहसंयोजी गुण",
+"धात्विक गुण",
+"विद्युत गुण",
+"चुंबकीय गुण"
+],
+0
+],
+
+[
+"वाष्प-दाब में आपेक्षिक अवनमन किससे संबंधित है?",
+[
+"विलेय कणों की संख्या",
+"विलायक का रंग",
+"पात्र की ऊँचाई",
+"गुरुत्वाकर्षण"
+],
+0
+],
+
+[
+"वान्ट हॉफ गुणांक को सामान्यतः किस प्रतीक से दर्शाते हैं?",
+[
+"i",
+"p",
+"q",
+"z"
+],
+0
+],
+
+[
+"समतापी विलयन में क्या समान होता है?",
+[
+"परासरण दाब",
+"परमाणु संख्या",
+"नाभिकीय आवेश",
+"परमाणु द्रव्यमान"
+],
+0
+],
+
+[
+"हाइपरटोनिक विलयन में बाहरी माध्यम की सांद्रता कैसी होती है?",
+[
+"अधिक",
+"कम",
+"शून्य",
+"हमेशा समान"
+],
+0
+],
+
+[
+"हाइपोटोनिक विलयन में बाहरी माध्यम की सांद्रता कैसी होती है?",
+[
+"कम",
+"अधिक",
+"अनंत",
+"सदैव समान"
+],
+0
+],
+
+[
+"रिवर्स ऑस्मोसिस में दाब किस ओर लगाया जाता है?",
+[
+"परासरण दाब से अधिक दाब",
+"शून्य दाब",
+"वायुमंडलीय दाब से कम",
+"कोई दाब नहीं"
+],
+0
+],
+
+[
+"समुद्री जल के शुद्धीकरण में कौन-सी विधि उपयोगी है?",
+[
+"रिवर्स ऑस्मोसिस",
+"आसवन मात्र",
+"निस्यंदन मात्र",
+"अवक्षेपण"
+],
+0
+],
+
+[
+"गैस की द्रव में विलेयता सामान्यतः दाब बढ़ाने पर क्या होती है?",
+[
+"बढ़ती है",
+"घटती है",
+"शून्य हो जाती है",
+"अपरिवर्तित रहती है"
+],
+0
+],
+
+[
+"गैस की द्रव में विलेयता सामान्यतः ताप बढ़ाने पर क्या होती है?",
+[
+"घटती है",
+"बढ़ती है",
+"हमेशा समान",
+"अनंत"
+],
+0
+],
+
+[
+"संतृप्त विलयन में क्या होता है?",
+[
+"दिए तापमान पर अधिकतम विलेय घुला होता है",
+"कोई विलेय नहीं होता",
+"केवल गैस होती है",
+"केवल विलायक होता है"
+],
+0
+],
+
+[
+"असंतृप्त विलयन में क्या संभव है?",
+[
+"और अधिक विलेय घुल सकता है",
+"कुछ भी नहीं घुल सकता",
+"विलायक नहीं होता",
+"दाब शून्य होता है"
+],
+0
+],
+
+[
+"अतिसंतृप्त विलयन कैसा होता है?",
+[
+"संतृप्ति से अधिक विलेय युक्त",
+"विलेय रहित",
+"केवल गैस युक्त",
+"केवल ठोस युक्त"
+],
+0
+],
+
+[
+"विलयन को पतला करने पर सांद्रता सामान्यतः क्या होती है?",
+[
+"घटती है",
+"बढ़ती है",
+"सदैव समान",
+"अनंत"
+],
+0
+],
+
+[
+"तनुकरण में सामान्यतः कौन-सा संबंध उपयोगी है?",
+[
+"M₁V₁ = M₂V₂",
+"M₁+V₁=M₂+V₂",
+"M₁V₂=M₂V₁",
+"M₁/V₁=M₂/V₂"
+],
+0
+],
+
+[
+"मोलरता पर तापमान का प्रभाव क्यों पड़ता है?",
+[
+"विलयन का आयतन बदल सकता है",
+"मोलों की संख्या बदलती है",
+"परमाणु संख्या बदलती है",
+"रासायनिक तत्व बदल जाते हैं"
+],
+0
+],
+
+[
+"मोललता पर तापमान का प्रभाव अपेक्षाकृत नगण्य क्यों है?",
+[
+"यह विलायक के द्रव्यमान पर आधारित है",
+"यह आयतन पर आधारित है",
+"यह रंग पर आधारित है",
+"यह दाब पर आधारित है"
+],
+0
+],
+
+[
+"द्रव्यमान प्रतिशत किससे संबंधित है?",
+[
+"विलेय के द्रव्यमान और विलयन के द्रव्यमान",
+"केवल तापमान",
+"केवल दाब",
+"केवल आयतन"
+],
+0
+],
+
+[
+"आयतन प्रतिशत किससे संबंधित है?",
+[
+"विलेय का आयतन और विलयन का आयतन",
+"केवल द्रव्यमान",
+"केवल दाब",
+"केवल तापमान"
+],
+0
+],
+
+[
+"गैसों की विलेयता पर हेनरी नियतांक किससे जुड़ा है?",
+[
+"दाब और विलेयता संबंध",
+"केवल घनत्व",
+"केवल रंग",
+"केवल ताप"
+],
+0
+],
+
+[
+"धनात्मक विचलन में वाष्प-दाब क्या होता है?",
+[
+"राउल्ट नियम से अधिक",
+"राउल्ट नियम से कम",
+"शून्य",
+"हमेशा समान"
+],
+0
+],
+
+[
+"ऋणात्मक विचलन में वाष्प-दाब क्या होता है?",
+[
+"राउल्ट नियम से कम",
+"राउल्ट नियम से अधिक",
+"अनंत",
+"शून्य"
+],
+0
+],
+
+[
+"एजियोट्रोप किस प्रकार का मिश्रण है?",
+[
+"स्थिर क्वथनांक वाला मिश्रण",
+"केवल ठोस मिश्रण",
+"केवल गैस",
+"शुद्ध तत्व"
+],
+0
+],
+
+[
+"विलेय और विलायक के बीच आकर्षण बहुत अधिक होने पर कौन-सा विचलन हो सकता है?",
+[
+"ऋणात्मक विचलन",
+"धनात्मक विचलन",
+"कोई विचलन नहीं",
+"परमाणु विचलन"
+],
+0
+],
+
+[
+"विलेय-विलायक आकर्षण बहुत कम होने पर कौन-सा विचलन हो सकता है?",
+[
+"धनात्मक विचलन",
+"ऋणात्मक विचलन",
+"नाभिकीय विचलन",
+"कोई गुण नहीं"
+],
+0
+],
+
+[
+"किस गुण को तापमान बदलने पर मोलरता की तुलना में अधिक स्थिर माना जाता है?",
+[
+"मोललता",
+"मोलरता",
+"आयतन प्रतिशत",
+"दाब"
+],
+0
+],
+
+[
+"विलयन में जो पदार्थ अधिक मात्रा में होता है उसे सामान्यतः क्या कहते हैं?",
+[
+"विलायक",
+"विलेय",
+"अवक्षेप",
+"उत्प्रेरक"
+],
+0
+],
+
+[
+"विलयन में जो पदार्थ कम मात्रा में घुला होता है उसे क्या कहते हैं?",
+[
+"विलेय",
+"विलायक",
+"उत्प्रेरक",
+"अवक्षेप"
+],
+0
+],
+
+[
+"जल को सामान्यतः किस नाम से जाना जाता है?",
+[
+"सार्वत्रिक विलायक",
+"अम्ल",
+"क्षार",
+"लवण"
+],
+0
+],
+
+[
+"चीनी का जल में घुलना किस प्रकार का उदाहरण है?",
+[
+"ठोस का द्रव में विलयन",
+"गैस का गैस में विलयन",
+"द्रव का गैस में विलयन",
+"ठोस का ठोस में विलयन"
+],
+0
+],
+
+[
+"वायु किसका उदाहरण है?",
+[
+"गैसों का विलयन",
+"ठोस का विलयन",
+"द्रव का विलयन",
+"केवल शुद्ध पदार्थ"
+],
+0
+],
+
+[
+"पीतल किसका उदाहरण है?",
+[
+"ठोस-ठोस विलयन",
+"गैस-द्रव विलयन",
+"द्रव-गैस विलयन",
+"गैस-गैस विलयन"
+],
+0
+],
+
+[
+"कार्बोनेटेड पेय में CO₂ किसमें घुली होती है?",
+[
+"द्रव में गैस",
+"ठोस में गैस",
+"गैस में ठोस",
+"ठोस में द्रव"
+],
+0
+],
+
+[
+"सांद्रता बढ़ाने के लिए सामान्यतः क्या किया जा सकता है?",
+[
+"विलेय बढ़ाना या विलायक घटाना",
+"केवल विलायक बढ़ाना",
+"केवल ताप घटाना",
+"पात्र बदलना"
+],
+0
+],
+
+[
+"विलेय की मात्रा स्थिर रखते हुए विलायक बढ़ाने पर सांद्रता क्या होगी?",
+[
+"घटेगी",
+"बढ़ेगी",
+"समान रहेगी",
+"अनंत होगी"
+],
+0
+],
+
+[
+"विलयन की एकरूपता किसकी विशेषता है?",
+[
+"समांगी मिश्रण",
+"विषमांगी मिश्रण",
+"तत्व",
+"यौगिक मात्र"
+],
+0
+]
+
+];
+
+
+/* =========================
+   EXTRA FACTS
+========================= */
+
+const facts=[
+
+"मोलरता = विलेय के मोल / विलयन का आयतन (लीटर)।",
+
+"मोललता = विलेय के मोल / विलायक का द्रव्यमान (किलोग्राम)।",
+
+"मोल अंश = किसी अवयव के मोल / सभी अवयवों के कुल मोल।",
+
+"ppm बहुत कम सांद्रता व्यक्त करने के लिए उपयोगी है।",
+
+"हेनरी का नियम गैस की द्रव में विलेयता से संबंधित है।",
+
+"राउल्ट का नियम आदर्श विलयनों के वाष्प-दाब से संबंधित है।",
+
+"सहसंयोजी गुण विलेय कणों की संख्या पर निर्भर करते हैं।",
+
+"परासरण में अर्धपारगम्य झिल्ली महत्वपूर्ण होती है।",
+
+"रिवर्स ऑस्मोसिस जल शुद्धीकरण में उपयोगी है।",
+
+"तापमान बदलने पर मोलरता बदल सकती है क्योंकि आयतन बदल सकता है।"
+
+];
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function go(id){
+
+ document
+ .querySelectorAll(".screen")
+ .forEach(x=>x.classList.remove("active"));
+
+ document
+ .getElementById(id)
+ .classList.add("active");
+
+ scrollTo(0,0);
+
+ updateProfile();
+
+}
+
+
+/* =========================
+   DRAWER
+========================= */
+
+function drawer(){
+
+ document
+ .getElementById("drawer")
+ .classList.toggle("open");
+
+}
+
+
+/* =========================
+   USER SYSTEM
+========================= */
+
+function getUser(){
+
+ return {
+
+  name:
+  localStorage.getItem("gyankshetraUserName") || "",
+
+  id:
+  localStorage.getItem("gyankshetraUserId") || ""
+
+ };
+
+}
+
+
+function shortName(name){
+
+ return (
+
+ name
+ .trim()
+ .split(/\s+/)[0] || "Name"
+
+ )
+ .replace(/[^\p{L}\p{N}]/gu,"");
+
+}
+
+
+function nextNumber(){
+
+ return Number(
+ localStorage.getItem("gyankshetraNextNumber") || 1
+ );
+
+}
+
+
+function previewId(){
+
+ const number=nextNumber();
+
+ const name=
+ shortName(
+ document.getElementById("nameInput").value
+ ) || "Name";
+
+ document.getElementById("idPreview").textContent=
+
+ "आपकी ID: @"+
+ String(number).padStart(2,"0")+
+ name;
+
+}
+
+
+function requireUser(action){
+
+ const user=getUser();
+
+ if(user.name){
+
+  action();
+
+ }else{
+
+  pendingAction=action;
+
+  document
+  .getElementById("loginModal")
+  .classList.add("open");
+
+  setTimeout(()=>{
+
+   document
+   .getElementById("nameInput")
+   .focus();
+
+  },100);
+
+  previewId();
+
+ }
+
+}
+
+
+function saveUser(){
+
+ const name=
+ document
+ .getElementById("nameInput")
+ .value
+ .trim();
+
+ if(!name){
+
+  alert("कृपया अपना नाम दर्ज करें।");
+
+  return;
+
+ }
+
+ const number=nextNumber();
+
+ const id=
+ "@"+
+ String(number).padStart(2,"0")+
+ shortName(name);
+
+ localStorage.setItem(
+ "gyankshetraUserName",
+ name
+ );
+
+ localStorage.setItem(
+ "gyankshetraUserId",
+ id
+ );
+
+ localStorage.setItem(
+ "gyankshetraNextNumber",
+ String(number+1)
+ );
+
+ document
+ .getElementById("loginModal")
+ .classList.remove("open");
+
+ updateProfile();
+
+ const action=pendingAction;
+
+ pendingAction=null;
+
+ if(action) action();
+
+}
+
+
+function changeUser(){
+
+ localStorage.removeItem(
+ "gyankshetraUserName"
+ );
+
+ localStorage.removeItem(
+ "gyankshetraUserId"
+ );
+
+ document
+ .getElementById("nameInput")
+ .value="";
+
+ previewId();
+
+ document
+ .getElementById("loginModal")
+ .classList.add("open");
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function updateProfile(){
+
+ const user=getUser();
+
+ document.getElementById(
+ "profileName"
+ ).textContent=
+
+ user.name ||
+ "Gyankshetra Student";
+
+ document.getElementById(
+ "profileId"
+ ).textContent=
+
+ user.id ||
+ "Login करके अपनी ID बनाएँ";
+
+ document.getElementById(
+ "welcome"
+ ).textContent=
+
+ user.name
+ ?
+ "नमस्ते "+user.name+" 👋"
+ :
+ "नमस्ते विद्यार्थी 👋";
+
+ document.getElementById(
+ "quizUser"
+ ).textContent=
+
+ user.id
+ ?
+ user.name+" • "+user.id
+ :
+ "";
+
+ document.getElementById(
+ "resultUser"
+ ).textContent=
+
+ user.id
+ ?
+ user.name+" • "+user.id
+ :
+ "";
+
+ const history=
+
+ JSON.parse(
+ localStorage.getItem("gyankshetraHistory") || "[]"
+ );
+
+ document.getElementById(
+ "historyText"
+ ).textContent=
+
+ history.length
+ ?
+ history.length+
+ " टेस्ट पूरे किए • पिछला: "+
+ history[history.length-1].marks+
+ "/50"
+ :
+ "अभी कोई टेस्ट नहीं दिया गया।";
+
+ let best=0;
+
+ history.forEach(x=>{
+
+  if(Number(x.marks)>best)
+  best=Number(x.marks);
+
+ });
+
+ document.getElementById(
+ "bestScore"
+ ).textContent=
+
+ best+" / 50";
+
+}
+
+
+/* =========================
+   START QUIZ
+========================= */
+
+function startQuiz(){
+
+ qi=0;
+
+ ans=
+ Array(TOTAL).fill(null);
+
+ time=TIME;
+
+ clearInterval(timerHandle);
+
+ go("quiz");
+
+ render();
+
+ timerHandle=
+ setInterval(()=>{
+
+  if(time>0){
+
+   time--;
+
+   renderTimer();
+
+  }else{
+
+   finish();
+
+  }
+
+ },1000);
+
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+function renderTimer(){
+
+ const m=
+ Math.floor(time/60);
+
+ const s=
+ time%60;
+
+ document.getElementById(
+ "timer"
+ ).textContent=
+
+ String(m).padStart(2,"0")+
+ ":"+
+ String(s).padStart(2,"0");
+
+}
+
+
+/* =========================
+   RENDER QUESTION
+========================= */
+
+function render(){
+
+ const q=questions[qi];
+
+ document.getElementById(
+ "qn"
+ ).textContent=
+
+ (qi+1)+"/"+TOTAL;
+
+ document.getElementById(
+ "num"
+ ).textContent=
+
+ qi+1;
+
+ document.getElementById(
+ "question"
+ ).textContent=
+
+ q[0];
+
+ document.getElementById(
+ "options"
+ ).innerHTML=
+
+ q[1].map((o,i)=>`
+
+ <div
+ class="option ${ans[qi]===i?"sel":""}"
+ onclick="choose(${i})"
+ >
+
+ ${String.fromCharCode(65+i)}. ${o}
+
+ </div>
+
+ `).join("");
+
+
+ const analysis=
+ document.getElementById("analysis");
+
+ analysis.hidden=
+ ans[qi]===null;
+
+
+ if(ans[qi]!==null){
+
+  analysis.innerHTML=
+
+  `<b>${
+  ans[qi]===q[2]
+  ?
+  "✅ सही उत्तर"
+  :
+  "❌ सही उत्तर"
+  }:
+  ${String.fromCharCode(65+q[2])}.
+  ${q[1][q[2]]}</b>
+
+  <br><br>
+
+  <b>⭐ 5 महत्वपूर्ण बिंदु</b>
+
+  <ol>
+
+  <li>${facts[qi%facts.length]}</li>
+
+  <li>सही परिभाषा और इकाई परीक्षा में महत्वपूर्ण है।</li>
+
+  <li>सांद्रता के अलग-अलग तरीकों का अंतर याद रखें।</li>
+
+  <li>तापमान और दाब के प्रभाव से जुड़े प्रश्नों का अभ्यास करें।</li>
+
+  <li>STET/BPSC TRE में तथ्यात्मक MCQ पूछे जा सकते हैं।</li>
+
+  </ol>`;
+
+ }
+
+
+ document.getElementById(
+ "palette"
+ ).innerHTML=
+
+ questions.map((_,i)=>`
+
+ <span
+ class="p
+ ${ans[i]!==null?"done":""}
+ ${i===qi?"cur":""}"
+ onclick="qi=${i};render()"
+ >
+
+ ${i+1}
+
+ </span>
+
+ `).join("");
+
+ renderTimer();
+
+}
+
+
+/* =========================
+   ANSWER
+========================= */
+
+function choose(i){
+
+ ans[qi]=i;
+
+ render();
+
+}
+
+
+/* =========================
+   NEXT
+========================= */
+
+function next(){
+
+ if(qi<TOTAL-1){
+
+  qi++;
+
+  render();
+
+ }else{
+
+  finish();
+
+ }
+
+}
+
+
+/* =========================
+   PREVIOUS
+========================= */
+
+function prev(){
+
+ if(qi>0){
+
+  qi--;
+
+  render();
+
+ }
+
+}
+
+
+/* =========================
+   FINISH
+========================= */
+
+function finish(){
+
+ clearInterval(timerHandle);
+
+ let correct=0;
+ let wrong=0;
+ let skipped=0;
+
+ ans.forEach((a,i)=>{
+
+  if(a===null){
+
+   skipped++;
+
+  }else if(a===questions[i][2]){
+
+   correct++;
+
+  }else{
+
+   wrong++;
+
+  }
+
+ });
+
+
+ const user=getUser();
+
+ const result={
+
+  date:new Date().toLocaleString("hi-IN"),
+
+  test:"विलयन",
+
+  marks:correct,
+
+  percentage:
+  Math.round(correct/TOTAL*100),
+
+  correct:correct,
+
+  wrong:wrong,
+
+  skipped:skipped,
+
+  userId:user.id
+
+ };
+
+
+ let history=
+
+ JSON.parse(
+ localStorage.getItem("gyankshetraHistory") || "[]"
+ );
+
+ history.push(result);
+
+ localStorage.setItem(
+ "gyankshetraHistory",
+ JSON.stringify(history)
+ );
+
+
+ document.getElementById(
+ "score"
+ ).textContent=
+
+ result.percentage+"%";
+
+ document.getElementById(
+ "correct"
+ ).textContent=
+
+ correct;
+
+ document.getElementById(
+ "wrong"
+ ).textContent=
+
+ wrong;
+
+ document.getElementById(
+ "skip"
+ ).textContent=
+
+ skipped;
+
+ document.getElementById(
+ "marks"
+ ).textContent=
+
+ correct+" / 50";
+
+ go("result");
+
+}
+
+
+/* =========================
+   IMPORTANT POINTS
+========================= */
+
+let points="";
+
+for(let i=1;i<=TOTAL;i++){
+
+ points+=`
+
+ <div class="point">
+
+ <b>
+ प्रश्न ${i} — 5 Important Points
+ </b>
+
+ <small>
+
+ ① मुख्य परिभाषा / तथ्य<br>
+
+ ② सूत्र या इकाई<br>
+
+ ③ संबंधित अवधारणा<br>
+
+ ④ परीक्षा में पूछा जाने वाला तथ्य<br>
+
+ ⑤ याद रखने योग्य बिंदु
+
+ </small>
+
+ </div>
+
+ `;
+
+}
+
+document.getElementById(
+ "pointsList"
+).innerHTML=points;
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+updateProfile();
+
+previewId();
+
+</script>
+
+</body>
+</html>
